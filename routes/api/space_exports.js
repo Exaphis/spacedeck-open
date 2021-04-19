@@ -184,6 +184,9 @@ router.get('/zip', function(req, res, next) {
               if (artifact.mime == "image/png" && fileName.indexOf(".png") < 0) {
                 fileName = fileName + ".png";
               }
+              if (artifact.mime == "image/jpg" && fileName.indexOf(".jpg") < 0) {
+                fileName = fileName + ".jpg";
+              }
 
               var localFilePath = localPath + '/' + fileName;
 

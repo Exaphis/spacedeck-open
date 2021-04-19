@@ -614,6 +614,10 @@ var SpacedeckSpaces = {
       window.open(ENV.apiEndpoint + "/api/spaces/" + space._id + "/png");
     },
 
+    download_space_as_jpg : function(space){
+      window.open(ENV.apiEndpoint + "/api/spaces/" + space._id + "/jpg");
+    },
+
     download_space_as_pdf: function(space) {
       this.close_dropdown();
       this.global_spinner = true;
@@ -633,6 +637,7 @@ var SpacedeckSpaces = {
        
         this.global_spinner = false; 
         location.href = o.url;
+        //window.open(o.url, "_blank");
 
       }.bind(this), function(xhr) {
         this.global_spinner = false;
