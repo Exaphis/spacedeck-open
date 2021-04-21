@@ -82,13 +82,9 @@ router.get('/', (req, res) => {
   });
 });
 
-router.post('/', function(req, res, next) {
-  var attrs = req.body;
-
-  attrs['space_id'] = req.space._id;
-
-  var artifact = attrs;
+function createArtifact(artifact, req, res, send_resp=true) {
   artifact._id = uuidv4();
+  artifact['space_id'] = req.space._id;
 
   if (req.user) {
     artifact.user_id = req.user._id;
@@ -104,12 +100,44 @@ router.post('/', function(req, res, next) {
       //if (err) res.status(400).json(err);
       db.unpackArtifact(artifact);
       db.Space.update({ updated_at: new Date() }, {where: {_id: req.space._id}});
-      res.distributeCreate("Artifact", artifact);
+
+      if (!send_resp) {
+        redis.sendMessage("create", "Artifact", artifact, req.channelId);
+      }
+      else {
+        res.distributeCreate("Artifact", artifact);
+      }
     });
-  } else {
-    res.status(401).json({
-      "error": "Access denied"
-    });
+  }
+  else {
+      return false;
+  }
+
+  return true;
+}
+
+router.post('/', function(req, res, next) {
+  var attrs = req.body;
+
+  if (Array.isArray(attrs)) {
+    for (let artifact of attrs) {
+      let success = createArtifact(artifact, req, res, false);
+      if (!success) {
+        res.status(401).json({
+          "error": "Access denied"
+        });
+      }
+    }
+
+    res.status(201).json({});
+  }
+  else {
+    let success = createArtifact(attrs, req, res);
+    if (!success) {
+      res.status(401).json({
+        "error": "Access denied"
+      });
+    }
   }
 });
 

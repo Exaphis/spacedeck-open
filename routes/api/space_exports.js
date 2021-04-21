@@ -174,11 +174,11 @@ router.get('/jpg_full', function(req, res, next) {
 });
 
 router.get('/zip', function(req, res, next) {
-  Artifact.find({
+  db.Artifact.findAll({where: {
     space_id: req.space._id
-  }, function(err, artifacts) {
-
-    if (!artifacts || !artifacts.length || err) {
+  }}).then(artifacts => {
+    console.log(JSON.stringify(artifacts));
+    if (!artifacts || !artifacts.length) {
       res.status(404).json({
         "error": "no artifacts"
       });
@@ -257,7 +257,6 @@ router.get('/zip', function(req, res, next) {
         }
 
       }, function(err, payloads) {
-
         var outputPath = '/tmp/' + req.space._id + '.zip';
         var output = fs.createWriteStream(outputPath);
         var archive = archiver('zip');
@@ -270,7 +269,7 @@ router.get('/zip', function(req, res, next) {
             });
 
             try {
-              fs.unlink(outputPath);
+              fs.unlinkSync(outputPath);
             } catch (e) {
               console.error(e);
             }
