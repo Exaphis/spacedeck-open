@@ -19,6 +19,8 @@ var crypto = require('crypto');
 var glob = require('glob');
 var gm = require('gm');
 var sanitizeHtml = require('sanitize-html');
+var pdf2pic = require('pdf2pic');
+var path = require('path');
 
 var express = require('express');
 var router = express.Router({mergeParams: true});
@@ -106,26 +108,69 @@ function make_export_filename(space, extension) {
   return space.name.replace(/[^\w]/g, '') + "-" + space._id + "-" + moment().format("YYYYMMDD-HH-mm-ss") + "." + extension;
 }
 
-router.get('/pdf', function(req, res, next) {
-  var s3_filename = make_export_filename(req.space, "pdf");
+function handle_screenshot_with_type(req, res, next, type, mime_type) {
+  var s3_filename = make_export_filename(req.space, type);
 
-  exporter.takeScreenshot(req.space, "pdf", function(local_path) {
-    uploader.uploadFile(s3_filename, "application/pdf", local_path, function(err, url) {
+  function upload_and_unlink(local_path) {
+    uploader.uploadFile(s3_filename, mime_type, local_path, function(err, url) {
       res.status(201).json({
         url: url
       });
-      fs.unlink(local_path, function(){
+      fs.unlink(local_path, function(err){
         if (err) console.log('unlink', err);
         else {
           console.log('unlink', local_path);
         }
       });
     });
+  }
+
+  exporter.takeScreenshot(req.space, 'pdf', function(local_path) {
+    if (type === 'jpg' || type === 'png') {
+      const convert = pdf2pic.fromPath(local_path, {
+        density: 100,
+        width: req.space.width,
+        height: req.space.height,
+        format: type,
+        saveFilename: path.basename(local_path) + '_tmp',
+        savePath: path.dirname(local_path)
+      });
+
+      convert(1).then((resolve) => {
+        console.log(JSON.stringify(resolve));
+        console.log('image converted, unlinking original');
+        fs.unlink(local_path, function(err){
+          if (err) console.log('unlink', err);
+          else {
+            console.log('unlink', local_path);
+          }
+        });
+
+        local_path = resolve.path;
+        upload_and_unlink(local_path);
+        return resolve;
+      });
+    }
+    else {
+      upload_and_unlink(local_path);
+    }
   }, (err) => {
     res.status(500).json({
-      error: "PDF could not created (500)"
+      error: `${type} could not created (500)`
     });
   });
+}
+
+router.get('/pdf', function(req, res, next) {
+  handle_screenshot_with_type(req, res, next, "pdf", "application/pdf");
+});
+
+router.get('/png_full', function(req, res, next) {
+  handle_screenshot_with_type(req, res, next, "png", "image/png");
+});
+
+router.get('/jpg_full', function(req, res, next) {
+  handle_screenshot_with_type(req, res, next, "jpg", "image/jpg");
 });
 
 router.get('/zip', function(req, res, next) {

@@ -88,6 +88,19 @@
       </div>
     </div>
 
+    <div class="dropdown top left center" v-bind:class="{open:opened_dialog=='export'}">
+      <div class="btn-collapse in">
+        <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='export'}" v-on:click="open_dialog('export')" title="Export">
+          <span class="icon icon-download"></span>
+          <span class="icon-label">Export</span>
+        </button>
+      </div>
+
+      <div class="dialog">
+        <%- include("./export.html") %>
+      </div>
+    </div>
+
     <button class="btn btn-transparent btn-icon-labeled"
             v-if="active_space_role=='admin'"
             v-on:click="activate_access()"

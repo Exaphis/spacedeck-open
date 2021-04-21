@@ -3,6 +3,13 @@
   This module contains functions dealing with Spaces UI.
 */
 
+function download_as_attachment(dataurl, filename) {
+  var a = document.createElement("a");
+  a.href = dataurl;
+  a.setAttribute("download", filename);
+  a.click();
+}
+
 var SpacedeckSpaces = {
 
   data: {
@@ -623,10 +630,34 @@ var SpacedeckSpaces = {
       this.global_spinner = true;
       get_resource("/spaces/" + space._id + "/pdf", function(o) {
         this.global_spinner = false;
-        window.open(o.url, "_blank");
+        download_as_attachment(o.url, "");
       }.bind(this), function(xhr) {
         this.global_spinner = false;
         alert("PDF export problem (" + xhr.status + ").");
+      }.bind(this));
+    },
+
+    download_space_as_png_full: function(space) {
+      this.close_dropdown();
+      this.global_spinner = true;
+      get_resource("/spaces/" + space._id + "/png_full", function(o) {
+        this.global_spinner = false;
+        download_as_attachment(o.url, "");
+      }.bind(this), function(xhr) {
+        this.global_spinner = false;
+        alert("PNG export problem (" + xhr.status + ").");
+      }.bind(this));
+    },
+
+    download_space_as_jpg_full : function(space){
+      this.close_dropdown();
+      this.global_spinner = true;
+      get_resource("/spaces/" + space._id + "/jpg_full", function(o) {
+        this.global_spinner = false;
+        download_as_attachment(o.url, "");
+      }.bind(this), function(xhr) {
+        this.global_spinner = false;
+        alert("JPG export problem (" + xhr.status + ").");
       }.bind(this));
     },
 
