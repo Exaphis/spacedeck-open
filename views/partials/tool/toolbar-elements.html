@@ -73,9 +73,7 @@
       </div>
     </div>
 
-    <button class="btn btn-divider" v-show="logged_in"></button>
-
-    <div class="dropdown top left center" v-show="logged_in" v-bind:class="{open:opened_dialog=='background'}">
+    <div class="dropdown top left center" v-bind:class="{open:opened_dialog=='background'}">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='background'}" v-on:click="open_dialog('background')" title="<%=__("tool_canvas")%>">
           <span class="letter">bg</span>
@@ -87,6 +85,8 @@
         <%- include("./background.html") %>
       </div>
     </div>
+
+    <button class="btn btn-divider" v-show="logged_in"></button>
 
     <div class="dropdown top left center" v-bind:class="{open:opened_dialog=='export'}">
       <div class="btn-collapse in">
