@@ -233,14 +233,16 @@ module.exports = {
       foreignKey: {
         name: 'user_id'
       },
-      as: 'user'
+      as: 'user',
+      onDelete: 'CASCADE'
     });
 
     Membership.belongsTo(Space, {
       foreignKey: {
         name: 'space_id'
       },
-      as: 'space'
+      as: 'space',
+      onDelete: 'CASCADE'
     });
 
     Artifact.belongsTo(User, {
@@ -254,7 +256,8 @@ module.exports = {
       foreignKey: {
         name: 'space_id'
       },
-      as: 'space'
+      as: 'space',
+      onDelete: 'CASCADE'
     });
 
     Message.belongsTo(User, {
@@ -268,7 +271,8 @@ module.exports = {
       foreignKey: {
         name: 'space_id'
       },
-      as: 'space'
+      as: 'space',
+      onDelete: 'CASCADE'
     });
 
     await sequelize.sync();
