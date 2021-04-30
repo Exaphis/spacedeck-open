@@ -32,6 +32,7 @@
     "morgan": "^1.9.1",
     "nodemailer": "^4.6.7",
     "pdf2pic": "^2.1.4",
+    "pg": "^8.6.0",
     "puppeteer": "8.0.0",
     "read-chunk": "^2.1.0",
     "request": "^2.88.0",

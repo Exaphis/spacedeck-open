@@ -44,6 +44,7 @@ RUN apk add graphicsmagick ffmpeg ffmpeg-dev ghostscript
 COPY package*.json ./
 RUN npm install
 COPY . .
+COPY ./config/docker.json ./config/default.json
 
 # start app
 
