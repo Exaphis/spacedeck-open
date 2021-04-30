@@ -12,7 +12,7 @@
   "storage_host": "db",
   "storage_database": "spacedeck",
   "storage_username": "spacedeck",
-  "storage_password": "spacedeck",
+  "storage_password": "",
 
   "storage_local_path": "./storage",
   "storage_local_db": "./database.sqlite",
