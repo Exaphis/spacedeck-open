@@ -43,16 +43,6 @@
 
     <div class="dropdown bottom light center">
       <div class="btn-collapse in">
-        <input type="file" multiple v-on:change="handle_image_file_upload($event)" id="image_file_upload" class="btn btn-transparent btn-icon-labeled" style="position: absolute; z-index: 1; opacity: 0;">
-        <button class="btn btn-transparent btn-icon-labeled" title="<%=__("media")%>">
-          <span class="icon icon-upload"></span>
-          <span class="icon-label" ><%=__("media")%></span>
-        </button>
-      </div>
-    </div>
-
-    <div class="dropdown bottom light center">
-      <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="start_adding_note()" v-bind:class="{active:active_tool=='note'}" title="<%=__("tool_text")%>">
           <span class="icon icon-tool-text"></span>
           <span class="icon-label"><%=__("tool_text")%></span>
@@ -60,7 +50,7 @@
       </div>
     </div>
 
-    <div class="dropdown top left light" v-bind:class="{open:opened_dialog=='zones'}">
+    <div class="dropdown top left light" v-bind:class="{open:opened_dialog=='zones'}" v-show="logged_in">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-bind:class="{open:opened_dialog=='zones'}" v-on:click="open_dialog('zones')" title="<%=__("tool_zones")%>">
           <span class="icon icon-zone"></span>
@@ -83,6 +73,17 @@
 
       <div class="dialog">
         <%- include("./background.html") %>
+      </div>
+    </div>
+
+    <div class="dropdown bottom light center">
+      <div class="btn-collapse in">
+        <input type="file" multiple v-on:change="handle_image_file_upload($event)" id="image_file_upload" class="btn btn-transparent btn-icon-labeled" style="position: absolute; z-index: 1; opacity: 0;">
+        <button class="btn btn-transparent btn-icon-labeled" title="Import">
+          <span class="icon icon-upload"></span>
+          <!-- FIXME: i18n for import --!>
+          <span class="icon-label" >Import</span>
+        </button>
       </div>
     </div>
 
@@ -117,7 +118,7 @@
               </span>
             </li>
             -->
-    <button class="btn btn-transparent btn-icon-labeled" title="Start Presentation (others follow what you see)" v-on:click="toggle_present_mode()" v-bind:class="{open:present_mode}">
+    <button class="btn btn-transparent btn-icon-labeled" title="Start Presentation (others follow what you see)" v-show="logged_in" v-on:click="toggle_present_mode()" v-bind:class="{open:present_mode}">
       <span class="icon icon-presentation"></span>
       <span class="icon-label"><%= __('present') %></span>
     </button>

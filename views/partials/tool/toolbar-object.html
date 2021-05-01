@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="dropdown top light right" v-bind:class="{open:opened_dialog=='layout'}">
+    <div class="dropdown top light right" v-if="logged_in" v-bind:class="{open:opened_dialog=='layout'}">
 
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="open_dialog('layout')"  v-bind:class="{open : opened_dialog=='layout'}" title="<%=__("tool_layout")%>">

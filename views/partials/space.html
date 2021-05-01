@@ -320,14 +320,14 @@
   </div-->
 
   <div class="btn-group light zoom-bar">
-    <button class="btn btn-icon btn-md btn-white" v-on:click="zoom_in()">
-      <span class="icon icon-plus"></span>
+    <button class="btn btn-icon btn-md btn-white" v-on:click="zoom_out()">
+      <span class="icon icon-minus"></span>
     </button>
     <button class="btn btn-md btn-white no-p" v-on:click="zoom_to_original()">
       {{viewport_zoom_percent}}%
     </button>
-    <button class="btn btn-icon btn-md btn-white" v-on:click="zoom_out()">
-      <span class="icon icon-minus"></span>
+    <button class="btn btn-icon btn-md btn-white" v-on:click="zoom_in()">
+      <span class="icon icon-plus"></span>
     </button>
   </div>
 
