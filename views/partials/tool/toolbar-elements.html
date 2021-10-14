@@ -41,6 +41,11 @@
       <span class="icon-label"><%=__("tool_arrow")%></span>
     </button>
 
+    <button class="btn btn-icon-labeled btn-transparent" v-on:click="start_drawing_line()" v-bind:class="{active:active_tool=='line'}" title="<%=__("tool_line")%>">
+      <span class="icon icon-tool-line"></span>
+      <span class="icon-label"><%=__("tool_line")%></span>
+    </button>
+
     <div class="dropdown bottom light center">
       <div class="btn-collapse in">
         <button class="btn btn-transparent btn-icon-labeled" v-on:click="start_adding_note()" v-bind:class="{active:active_tool=='note'}" title="<%=__("tool_text")%>">

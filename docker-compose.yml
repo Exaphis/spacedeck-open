@@ -5,3 +5,6 @@ services:
     container_name: spacedeck
     ports:
       - "9666:9666"
+    volumes:
+      - ./storage:/app/storage
+      - ./database:/app/database
